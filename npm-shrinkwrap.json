@@ -87,24 +87,26 @@
         }
       }
     },
-    "route-recognizer": {
-      "version": "0.1.5",
-      "from": "route-recognizer@>=0.1.4 <0.2.0",
-      "resolved": "https://registry.npmjs.org/route-recognizer/-/route-recognizer-0.1.5.tgz"
-    },
     "t11e-appcore": {
       "version": "0.0.1",
-      "from": "../../../../../var/folders/qs/wpmg19r12_9_nz7pvvs2_82r0000gn/T/npm-18184-dd4d2377/1422988527366-0.463449488626793/404f5cc07f3984f6565354cd6796ec4468026867",
-      "resolved": "git+https://github.com/t11e/t11e-appcore.git#404f5cc07f3984f6565354cd6796ec4468026867"
+      "from": "../../../../../var/folders/qs/wpmg19r12_9_nz7pvvs2_82r0000gn/T/npm-32618-1a7e1f4b/1422993321688-0.38150834664702415/404f5cc07f3984f6565354cd6796ec4468026867",
+      "resolved": "git+https://github.com/t11e/t11e-appcore.git#404f5cc07f3984f6565354cd6796ec4468026867",
+      "dependencies": {
+        "route-recognizer": {
+          "version": "0.1.5",
+          "from": "route-recognizer@>=0.1.4 <0.2.0",
+          "resolved": "https://registry.npmjs.org/route-recognizer/-/route-recognizer-0.1.5.tgz"
+        }
+      }
     },
     "t11e-utils": {
       "version": "0.0.1",
-      "from": "../../../../../var/folders/qs/wpmg19r12_9_nz7pvvs2_82r0000gn/T/npm-18184-dd4d2377/1422988527351-0.7664473478216678/91a20757190849227a9fb36aa5a6f26c09105a1e",
+      "from": "../../../../../var/folders/qs/wpmg19r12_9_nz7pvvs2_82r0000gn/T/npm-32618-1a7e1f4b/1422993321680-0.009879183024168015/91a20757190849227a9fb36aa5a6f26c09105a1e",
       "resolved": "git+https://github.com/t11e/t11e-utils.git#91a20757190849227a9fb36aa5a6f26c09105a1e",
       "dependencies": {
         "http-browserify": {
           "version": "1.7.0",
-          "from": "../../../../../var/folders/qs/wpmg19r12_9_nz7pvvs2_82r0000gn/T/npm-18184-dd4d2377/1422988527959-0.42588014993816614/e0ca5fdf346c4d851276c1672e6e60681b28da02",
+          "from": "../../../../../var/folders/qs/wpmg19r12_9_nz7pvvs2_82r0000gn/T/npm-32618-1a7e1f4b/1422993322211-0.0005553595256060362/e0ca5fdf346c4d851276c1672e6e60681b28da02",
           "resolved": "git+https://github.com/bjoerge/http-browserify.git#e0ca5fdf346c4d851276c1672e6e60681b28da02",
           "dependencies": {
             "Base64": {
