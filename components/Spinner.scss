@@ -1,4 +1,4 @@
-.spinner {
+.Spinner {
   overflow: hidden;
   display: block;
   text-align: center;
@@ -6,7 +6,7 @@
   width: 100%;
   color: lighten($text_color, 40%);
 
-  .spinner_content {
+  .Spinner_content {
     display: table-cell;
     width: 100%;
     vertical-align: middle;
@@ -21,7 +21,7 @@
       font-size: 80px;
     }
 
-    .spinner_content_title {
+    .Spinner_content_title {
       text-align: center;
       display: block;
       font-size: 30px;
