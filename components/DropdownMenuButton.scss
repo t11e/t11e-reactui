@@ -1,0 +1,85 @@
+// TODO: Capitalize component names according to new convention
+
+.dropdown_menu_button {
+  @include focusable;
+  @include button;
+  position: relative;
+  vertical-align: baseline;
+  text-align: left;
+
+  &.dropdown_menu_value_button {
+    border: solid 1px $form_field_border_color;
+    background: #fff;
+  }
+
+  .dropdown_menu_button_content {
+    line-height: $base_line_height;
+    position: relative;
+    padding-right: 15px;
+    display: block;
+
+    .dropdown_menu_button_content_label {
+      display: block;
+
+      .dropdown_menu_button_content_label_text {
+        display: block;
+        min-width: 20px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        vertical-align: baseline;
+        line-height: 1;
+      }
+    }
+
+    .dropdown_menu_button_content_arrow {
+      position: absolute;
+      top: 0;
+      right: 0;
+      span:before {
+        line-height: 1;
+        @extend .ion;
+        opacity: 0.5;
+        padding: 0 0 0 5px;
+        content: $ionicon-var-ios7-arrow-down;
+      }
+    }
+  }
+
+  &[data-open=true] {
+    opacity: 0.6;
+    .dropdown_menu_button_content_arrow {
+      span:before {
+        content: $ionicon-var-ios7-arrow-up;
+      }
+    }
+  }
+
+  &[data-loading=true] {
+    opacity: 0.8;
+    .dropdown_menu_button_content_label_text {
+      span {
+        @extend .ion-ios7-reloading;
+      }
+    }
+  }
+
+  &:hover {
+    .dropdown_menu_button_content_arrow {
+      span:before {
+        opacity: 1.0;
+      }
+    }
+  }
+}
+
+.dropdown_menu_button_floater {
+  display: table;
+  z-index: inherit;
+
+  .dropdown_menu_button_dropdown {
+    @include dropdown;
+    z-index: inherit;
+    display: table-cell;
+  }
+}

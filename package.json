@@ -1,0 +1,28 @@
+{
+  "name": "t11e-reactui",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+  },
+  "main": "index.js",
+  "dependencies": {
+    "bluebird": "^2.3.11",
+    "debug": "^2.1.0",
+    "dom-event": "0.0.4",
+    "events": "^1.0.2",
+    "flux": "^2.0.1",
+    "route-recognizer": "^0.1.4",
+    "jquery": "^1.11.1-beta1",
+    "react": "~0.12.1",
+    "t11e-appcore": "git+https://github.com/t11e/t11e-appcore.git",
+    "t11e-utils": "git+https://github.com/t11e/t11e-utils.git",
+    "underscore": "~1.7.0"
+  },
+  "devDependencies": {
+  },
+  "browser": {
+  },
+  "browserify": {
+    "transform": ["reactify"]
+  }
+}

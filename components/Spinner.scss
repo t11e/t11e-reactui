@@ -1,0 +1,33 @@
+.spinner {
+  overflow: hidden;
+  display: block;
+  text-align: center;
+  display: table;
+  width: 100%;
+  color: lighten($text_color, 40%);
+
+  .spinner_content {
+    display: table-cell;
+    width: 100%;
+    vertical-align: middle;
+    text-align: center;
+
+    &:before {
+      @extend .ion-ios7-reloading;
+      -webkit-animation: spin 1.5s infinite linear;
+      -moz-animation: spin 1.5s infinite linear;
+      -o-animation: spin 1.5s infinite linear;
+      animation: spin 1.5s infinite linear;
+      font-size: 80px;
+    }
+
+    .spinner_content_title {
+      text-align: center;
+      display: block;
+      font-size: 30px;
+      font-weight: 200;
+      text-transform: uppercase;
+      margin: 10px 0 0 0;
+    }
+  }
+}

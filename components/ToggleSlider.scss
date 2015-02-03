@@ -1,0 +1,35 @@
+.ToggleSlider {
+  vertical-align: top;
+  position: relative;
+  line-height: 1;
+  display: inline-block;
+  white-space: nowrap;
+  cursor: pointer;
+
+  .ToggleSlider_item {
+    vertical-align: top;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    display: inline-block;
+    padding: 4px 10px;
+
+    > span {
+      display: inline-block;
+    }
+
+    &:hover {
+      @include fade_on_hover;
+    }
+  }
+
+  .ToggleSlider_handle {
+    position: absolute;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    transition: left 0.2s ease-out, width 0.2s ease-out;
+    z-index: 0;
+  }
+
+}

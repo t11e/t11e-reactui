@@ -1,0 +1,107 @@
+.SelectList {
+  min-width: 100px;
+  white-space: nowrap;
+  line-height: $base_line_height;
+
+  ul {
+    @include non_list;
+    padding: 5px 0;
+    li {
+      a {
+        cursor: pointer;
+        padding: 5px 10px;
+        display: table;
+        transition: background 0.3s ease-out;
+        color: inherit;
+        width: 100%;
+
+        > span {
+          display: table-cell;
+          vertical-align: baseline;
+          width: 100%;
+        }
+
+        > .count {
+          display: table-cell;
+          vertical-align: baseline;
+          color: #888;
+          padding: 0 0 0 15px;
+          max-width: 20%;
+          text-align: right;
+          font-size: $base_font_size / 1.1;
+        }
+
+        &:hover {
+          color: inherit;
+          text-decoration: none;
+        }
+
+        &:visited, &:active {
+          color: inherit;
+        }
+      }
+
+      &[data-current="true"] {
+        a {
+          background: lighten($selection_background_color, 50%);
+        }
+      }
+
+      &:hover {
+        a {
+          background: lighten($selection_background_color, 70%);
+        }
+      }
+    }
+  }
+
+  &[data-multi-select="false"] {
+    ul {
+      li {
+        &[data-selected="true"] {
+          a {
+            @include selected;
+          }
+        }
+      }
+    }
+  }
+
+  &[data-multi-select="true"] {
+    ul {
+      li {
+        a {
+          &:before {
+            @extend .ion;
+            content: $ionicon-var-ios7-circle-outline;
+            padding-right: 5px;
+          }
+
+          &:hover {
+            &:before {
+              visibility: visible;
+              opacity: 0.3;
+            }
+          }
+        }
+
+        &[data-selected="true"] {
+          a {
+            font-weight: 600;
+
+            &:before {
+              content: $ionicon-var-ios7-checkmark;
+              opacity: 1.0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.dropdown_menu_button_dropdown {
+  .SelectList {
+    font-size: $base_font_size * (16 / 12.0);
+  }
+}
