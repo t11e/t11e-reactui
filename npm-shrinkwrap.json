@@ -89,12 +89,12 @@
     },
     "t11e-utils": {
       "version": "0.0.1",
-      "from": "../../../../../var/folders/qs/wpmg19r12_9_nz7pvvs2_82r0000gn/T/npm-32618-1a7e1f4b/1422993321680-0.009879183024168015/91a20757190849227a9fb36aa5a6f26c09105a1e",
+      "from": "../../../../../var/folders/qs/wpmg19r12_9_nz7pvvs2_82r0000gn/T/npm-8239-aff94b7e/1423078903085-0.6548616653308272/91a20757190849227a9fb36aa5a6f26c09105a1e",
       "resolved": "git+https://github.com/t11e/t11e-utils.git#91a20757190849227a9fb36aa5a6f26c09105a1e",
       "dependencies": {
         "http-browserify": {
           "version": "1.7.0",
-          "from": "../../../../../var/folders/qs/wpmg19r12_9_nz7pvvs2_82r0000gn/T/npm-32618-1a7e1f4b/1422993322211-0.0005553595256060362/e0ca5fdf346c4d851276c1672e6e60681b28da02",
+          "from": "../../../../../var/folders/qs/wpmg19r12_9_nz7pvvs2_82r0000gn/T/npm-8239-aff94b7e/1423078904093-0.3361336200032383/e0ca5fdf346c4d851276c1672e6e60681b28da02",
           "resolved": "git+https://github.com/bjoerge/http-browserify.git#e0ca5fdf346c4d851276c1672e6e60681b28da02",
           "dependencies": {
             "Base64": {
