@@ -22,7 +22,7 @@ var DropdownMenuButton = React.createClass({
       label: null,
       labelHtml: null,
       isValueButton: false
-    }
+    };
   },
 
   getInitialState: function() {
@@ -56,6 +56,11 @@ var DropdownMenuButton = React.createClass({
   },
 
   render: function() {
+    // FIXME: This is ugly and we should actually hook both mousedown and
+    //   touchstart (but we can't right now since it would immediately trigger
+    //   both and cause two clicks)
+    var touchEnabled = 'ontouchstart' in window;
+
     return (
       <a ref='button'
         className={'dropdown_menu_button' + (this.props.isValueButton ? ' dropdown_menu_value_button' : '')}
@@ -63,8 +68,8 @@ var DropdownMenuButton = React.createClass({
         data-loading={this.props.loading}
         data-open={this.state.open}
         onClick={this._handleClick}
-        onMouseDown={this._handleMouseDown}
-        onTouchStart={this._handleMouseDown}>
+        onMouseDown={!touchEnabled ? this._handleMouseDown : null}
+        onTouchStart={touchEnabled ? this._handleMouseDown : null}>
         <span className='dropdown_menu_button_content'>
           <span className='dropdown_menu_button_content_label'>
             {
