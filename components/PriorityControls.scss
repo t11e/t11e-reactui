@@ -1,0 +1,79 @@
+@mixin priority_bar_cell {
+  border-radius: 14px;
+  background: #f0f0f0;
+  color: $text_color;
+  width: 150px;
+  display: table;
+  cursor: pointer;
+  padding-right: 15px;
+
+  &[data-dragging="true"] {
+    visibility: hidden;
+  }
+
+  .PriorityBar_cell_rank {
+    display: table-cell;
+    background: #222;
+    border-radius: 14px;
+    padding: 5px 10px;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .PriorityBar_cell_label {
+    display: table-cell;
+    font-size: 14px;
+    text-transform: uppercase;
+    padding: 5px 5px 5px 0;
+    vertical-align: middle;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+.PriorityControls {
+  .PriorityBar {
+    ul {
+      @include non_list;
+      li {
+        margin: 5px 0;
+
+        .PriorityBar_cell {
+          @include priority_bar_cell;
+          width: 100%;
+
+          &:hover {
+            background: #ddd;
+            .PriorityBar_cell_rank {
+              color: #ff9c00;
+            }
+          }
+        }
+      }
+    }
+
+    &.PriorityBar_horizontal {
+      text-align: center;
+      li {
+        display: inline-block;
+        width: 150px;
+
+        & + li {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+}
+
+.PriorityBar_cell_drag_proxy {
+  @include priority_bar_cell;
+  z-index: 500000;
+  opacity: 0.6;
+  .PriorityBar_cell_rank {
+    color: #ff9c00;
+  }
+}
