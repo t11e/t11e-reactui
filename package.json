@@ -6,11 +6,11 @@
   },
   "main": "index.js",
   "dependencies": {
-    "bluebird": "^2.3.11",
-    "debug": "^2.1.0",
-    "dom-event": "0.0.4",
-    "events": "^1.0.2",
-    "underscore": "~1.7.0",
+    "bluebird": ">=2.3.11, <3.0",
+    "debug": ">=2.1.0, <3.0",
+    "dom-event": ">=0.0.4, <1.0",
+    "events": ">=1.0.2, <2.0",
+    "underscore": "=1.7.0",
     "t11e-utils": "git+https://github.com/t11e/t11e-utils.git"
   },
   "devDependencies": {
