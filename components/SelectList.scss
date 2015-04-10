@@ -44,13 +44,19 @@
 
       &[data-current="true"] {
         a {
-          background: lighten($selection_background_color, 50%);
+          @if variable-exists(selection_background_color) {
+            background: lighten($selection_background_color, 50%);
+          }
         }
       }
 
       &:hover {
         a {
-          background: lighten($selection_background_color, 70%);
+          @if variable-exists(selection_hover_background_color) {
+            background: $selection_hover_background_color;
+          } @else if variable-exists(selection_background_color) {
+            background: lighten($selection_background_color, 70%);
+          }
         }
       }
     }
