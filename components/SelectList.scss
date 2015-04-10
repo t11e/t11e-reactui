@@ -44,13 +44,13 @@
 
       &[data-current="true"] {
         a {
-          background: lighten($selection_background_color, 50%);
+          background: $current_background_color;
         }
       }
 
       &:hover {
         a {
-          background: lighten($selection_background_color, 70%);
+          background: $selection_background_hover_color;
         }
       }
     }
