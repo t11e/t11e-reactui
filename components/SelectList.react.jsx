@@ -93,7 +93,7 @@ var SelectList = React.createClass({
           this._selectItem(this.props.items[index]);
         }
         event.preventDefault();
-              }
+      }
     }
   },
 
