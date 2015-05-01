@@ -3,7 +3,7 @@
   white-space: nowrap;
   line-height: $base_line_height;
 
-  ul {
+  ol {
     margin: 0;
     list-style: none;
     padding: 5px 0;
@@ -56,8 +56,28 @@
     }
   }
 
+  .SelectList_group {
+    .SelectList_group_heading {
+      text-align: center;
+      opacity: 0.8;
+      text-transform: uppercase;
+      font-size: 80%;
+      cursor: pointer;
+      border-bottom: solid 1px rgba(0, 0, 0, 0.1);
+      padding: 5px 0;
+    }
+
+    & + .SelectList_group {
+      margin-top: 0;
+    }
+
+    > ol {
+      padding: 0;
+    }
+  }
+
   &[data-multi-select="false"] {
-    ul {
+    ol {
       li {
         &[data-selected="true"] {
           a {
@@ -69,7 +89,7 @@
   }
 
   &[data-multi-select="true"] {
-    ul {
+    ol {
       li {
         a {
           &:before {

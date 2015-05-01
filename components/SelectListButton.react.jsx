@@ -8,20 +8,33 @@ var SelectList = require('./SelectList.react');
 
 var SelectListButton = React.createClass({
 
+  propTypes: {
+    labelAttribute: React.PropTypes.string.isRequired,
+    labelTemplate: React.PropTypes.func,
+    unsetLabel: React.PropTypes.string,
+    items: React.PropTypes.array,
+    multiSelect: React.PropTypes.bool,
+    groupBy: React.PropTypes.func,
+    groupTemplate: React.PropTypes.func
+  },
+
   getDefaultProps: function() {
     return {
       items: [],
       unsetLabel: '',
+      labelTemplate: null,
       labelAttribute: 'label',
       multiSelect: false,
-      itemTemplate: function(item) {
+      groupBy: () => null,
+      groupTemplate: group => group.toString(),
+      itemTemplate: item => {
         return (
           <a>
             <span>{item[this.labelAttribute || 'label']}</span>
-            <span className='count'>{item.count != 0 ? item.count : ''}</span>
+            <span className='count'>{item.count !== 0 ? item.count : ''}</span>
           </a>
         );
-      }.bind(this)
+      }
     };
   },
 
@@ -48,6 +61,8 @@ var SelectListButton = React.createClass({
         loading={this.props.loading}>
         <SelectList
           items={this.props.items}
+          groupBy={this.props.groupBy}
+          groupTemplate={this.props.groupTemplate}
           multiSelect={this.props.multiSelect}
           selectedItems={this._getSelectedItems()}
           onSelectionChange={this._handleSelectionChange}
@@ -86,12 +101,21 @@ var SelectListButton = React.createClass({
   },
 
   _formatLabel: function() {
-    var self = this;
-    var items = this._getSelectedItems();
+    const items = this._getSelectedItems();
     if (items.length > 0) {
-      return _.map(items, function(item) {
-        return item[self.props.labelAttribute || 'label'] || '';
-      }).join(', ');
+      const labelAttribute = this.props.labelAttribute || 'label';
+      const labelTemplate = this.props.labelTemplate || (item => item[labelAttribute]);
+      if (items.length > 1) {
+        return labelTemplate(items[0]);
+      } else {
+        return (
+          <ol>
+            {
+              items.map((item, i) => <li key={i}>{labelTemplate(item)}</li>)
+            }
+          </ol>
+        );
+      }
     } else {
       return this.props.unsetLabel || '';
     }

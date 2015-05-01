@@ -1,20 +1,35 @@
 'use strict';
 
-var React = require('react');
-var $ = require('jquery');
-var _ = require('underscore');
+let React = require('react');
+let $ = require('jquery');
+let _ = require('underscore');
+import Immutable from 'immutable';
 
-var PreventSelectionMixin = require('../lib/mixins/PreventSelectionMixin');
+let PreventSelectionMixin = require('../lib/mixins/PreventSelectionMixin');
 
-var SelectList = React.createClass({
+let SelectList = React.createClass({
 
   mixins: [PreventSelectionMixin],
 
-  getDefaultProps: function() {
+  propTypes: {
+    items: React.PropTypes.array.isRequired,
+    limit: React.PropTypes.number,
+    multiSelect: React.PropTypes.bool,
+    template: React.PropTypes.func,
+    groupBy: React.PropTypes.func,
+    groupTemplate: React.PropTypes.func,
+    parentInput: React.PropTypes.object,
+    parentElement: React.PropTypes.object,
+    selectedItems: React.PropTypes.array,
+    onSelectionChange: React.PropTypes.func
+  },
+
+  getDefaultProps() {
     return {
       limit: null,
       multiSelect: false,
-      template: function(item) { return item.label; },
+      template: item => item.label,
+      groupBy: () => null,
       parentInput: null,
       parentElement: null,
       selectedItems: [],
@@ -22,70 +37,84 @@ var SelectList = React.createClass({
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       selectedItems: this.props.selectedItems,
       currentItem: null
     };
   },
 
-  componentDidMount: function() {
+  componentDidMount() {
     if (this.props.parentInput) {
       $(this.props.parentInput).on('keydown', this._handleParentInputKeydown);
     }
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     if (this.props.parentInput) {
       $(this.props.parentInput).off('keydown', this._handleParentInputKeydown);
     }
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
-  },
-
-  render: function() {
-    var self = this;
-    var items = this.props.items;
-
-    var limited = false;
-    if (this.props.limit && items.length > this.props.limit) {
+  render() {
+    let items = Immutable.List(this.props.items);
+    if (this.props.limit && items.size > this.props.limit) {
       items = items.slice(0, this.props.limit);
-      limited = true;
     }
+
+    const groups = items.map((item, idx) => [item, idx]).groupBy(
+      ([item, ]) => this.props.groupBy(item)).entrySeq();
 
     return (
       <div className='SelectList'
         data-multi-select={this.props.multiSelect}
         onClick={this._handleItemClick}>
-        <ul>
-          {
-            items.map(function(item, i) {
+        {
+          groups.map(([group, groupItems], groupIdx) => {
+            const ol = (
+              <ol key={groupIdx}>
+                {
+                  groupItems.map(([item, idx]) => {
+                    return (
+                      <li key={idx}
+                        data-item-index={idx}
+                        data-current={this.state.currentItem === item}
+                        data-selected={this._isItemSelected(item)}>
+                        {this.props.template(item)}
+                      </li>
+                    );
+                  }).toArray()
+                }
+              </ol>
+            );
+            if (group) {
               return (
-                <li key={'item-' + i}
-                  data-item-index={i}
-                  data-current={self.state.currentItem === item}
-                  data-selected={self._isItemSelected(item)}>
-                  {self.props.template(item)}
-                </li>
+                <div className='SelectList_group' key={groupIdx}>
+                  <div className='SelectList_group_heading'>
+                    {this.props.groupTemplate(group)}
+                  </div>
+                  {ol}
+                </div>
               );
-            })
-          }
-        </ul>
+            } else {
+              return ol;
+            }
+          }).toArray()
+        }
       </div>
     );
   },
 
-  _handleItemClick: function(event) {
+  _handleItemClick(event) {
     if (!this.isMounted()) {
       return;
     }
-    var $target = $(event.target);
+    let $target = $(event.target);
     if (!$target.is('li')) {
       $target = $($target.parents('[data-item-index]').get(0));
     }
     if ($target.attr('data-item-index')) {
-      var index = parseInt($target.attr('data-item-index'));
+      let index = parseInt($target.attr('data-item-index'));
       if (index >= 0 && index < this.props.items.length) {
         if (this.props.multiSelect) {
           this._toggleSelectItem(this.props.items[index]);
@@ -97,7 +126,7 @@ var SelectList = React.createClass({
     }
   },
 
-  _setSelection: function(items) {
+  _setSelection(items) {
     if (!_.isEqual(this.state.selectedItems, items)) {
       this.setState({selectedItems: items});
       if (this.props.onSelectionChange) {
@@ -106,13 +135,13 @@ var SelectList = React.createClass({
     }
   },
 
-  _isItemSelected: function(item) {
+  _isItemSelected(item) {
     return _.any(this.state.selectedItems, function(i) {
       return _.isEqual(i, item);
     });
   },
 
-  _selectItem: function(item) {
+  _selectItem(item) {
     if (item) {
       if (this.props.multiSelect) {
         if (item.value === null) {
@@ -126,13 +155,13 @@ var SelectList = React.createClass({
     }
   },
 
-  _unselectItem: function(item) {
+  _unselectItem(item) {
     this._setSelection(_.reject(this.state.selectedItems, function(i) {
       return _.isEqual(i, item);
     }));
   },
 
-  _toggleSelectItem: function(item) {
+  _toggleSelectItem(item) {
     if (item) {
       if (this._isItemSelected(item)) {
         this._unselectItem(item);
@@ -142,43 +171,59 @@ var SelectList = React.createClass({
     }
   },
 
-  _handleParentInputKeydown: function(event) {
-    var items = this.props.items;
+  _handleParentInputKeydown(event) {
     switch (event.keyCode) {
       case 38:
-        var index = 0;
-        if (this.state.currentItem) {
-          index = items.indexOf(this.state.currentItem);
-          if (index == 0) {
-            index = items.length - 1;
-          } else {
-            index--;
-          }
-        } else if (items.length > 0) {
-          index = items.length - 1;
-        }
-        this.setState({currentItem: items[index]});
+        this._selectPreviousItem();
         event.preventDefault();
+        break;
 
       case 40:
-        var index = 0;
-        if (this.state.currentItem) {
-          index = items.indexOf(this.state.currentItem);
-          if (index >= items.length - 1) {
-            index = 0;
-          } else {
-            index++;
-          }
-        } else if (items.length > 0) {
-          index = 0;
-        }
-        this.setState({currentItem: items[index]});
+        this._selectNextItem();
         event.preventDefault();
+        break;
 
       case 13:
-        this._selectItem(this.state.currentItem);
+        this._selectCurrentItem();
         event.preventDefault();
+        break;
     }
+  },
+
+  _selectCurrentItem() {
+    this._selectItem(this.state.currentItem);
+  },
+
+  _selectPreviousItem() {
+    let items = this.props.items;
+    let index = 0;
+    if (this.state.currentItem) {
+      index = items.indexOf(this.state.currentItem);
+      if (index === 0) {
+        index = items.length - 1;
+      } else {
+        index--;
+      }
+    } else if (items.length > 0) {
+      index = items.length - 1;
+    }
+    this.setState({currentItem: items[index]});
+  },
+
+  _selectNextItem() {
+    let items = this.props.items;
+    let index = 0;
+    if (this.state.currentItem) {
+      index = items.indexOf(this.state.currentItem);
+      if (index >= items.length - 1) {
+        index = 0;
+      } else {
+        index++;
+      }
+    } else if (items.length > 0) {
+      index = 0;
+    }
+    this.setState({currentItem: items[index]});
   }
 
 });
