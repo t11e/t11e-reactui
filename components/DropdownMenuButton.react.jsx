@@ -11,7 +11,10 @@ var DropdownMenuButton = React.createClass({
   mixins: [PreventSelectionMixin, LayeredComponentMixin],
 
   propTypes: {
-    label: React.PropTypes.string,
+    label: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.element
+    ]),
     labelHtml: React.PropTypes.string,
     isRequired: React.PropTypes.bool,
     loading: React.PropTypes.bool
@@ -29,12 +32,6 @@ var DropdownMenuButton = React.createClass({
     return {
       open: false
     };
-  },
-
-  componentWillUnmount: function() {
-  },
-
-  componentDidUpdate: function(prevProps, prevState) {
   },
 
   renderLayer: function(props) {
@@ -81,7 +78,7 @@ var DropdownMenuButton = React.createClass({
                   <span dangerouslySetInnerHTML={{__html: this.props.labelHtml}}/>
                 </span>
                 :
-                (this.props.label && this.props.label.length > 0) ?
+                (this.props.label && this.props.label !== '') ?
                   <span className='dropdown_menu_button_content_label_text'>{this.props.label}</span>
                   :
                   <span className='dropdown_menu_button_content_label_text'>&nbsp;</span>

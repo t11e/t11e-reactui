@@ -29,6 +29,25 @@
         overflow: hidden;
         vertical-align: baseline;
         line-height: 1;
+
+        > ol {
+          display: inline;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+
+          > li {
+            display: inline;
+
+            &:before {
+              content: ", ";
+            }
+
+            &:first-child:before {
+              content: "";
+            }
+          }
+        }
       }
     }
 
