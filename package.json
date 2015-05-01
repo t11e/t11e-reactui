@@ -2,27 +2,27 @@
   "name": "t11e-reactui",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-  },
+  "scripts": {},
   "main": "index.js",
   "dependencies": {
     "bluebird": ">=2.3.11, <3.0",
     "debug": ">=2.1.0, <3.0",
     "dom-event": ">=0.0.4, <1.0",
     "events": ">=1.0.2, <2.0",
-    "underscore": "=1.7.0",
-    "t11e-utils": "git+https://github.com/t11e/t11e-utils.git"
+    "immutable": "^3.7.2",
+    "t11e-utils": "git+https://github.com/t11e/t11e-utils.git",
+    "underscore": "=1.7.0"
   },
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "peerDependencies": {
     "flux": "^2.0.1",
     "jquery": "^1.11.1-beta1",
     "react": "~0.12.1"
   },
-  "browser": {
-  },
+  "browser": {},
   "browserify": {
-    "transform": ["babelify"]
+    "transform": [
+      "babelify"
+    ]
   }
 }
