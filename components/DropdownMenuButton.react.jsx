@@ -103,11 +103,13 @@ var DropdownMenuButton = React.createClass({
   _handleClick: function(event) {
     event.preventDefault();
     event.stopPropagation();
-      },
+  },
 
   _handleMouseDown: function(event) {
     if (!this.props.loading) {
       this._toggleOpen();
+      event.preventDefault();
+      event.stopPropagation();
     }
   },
 
