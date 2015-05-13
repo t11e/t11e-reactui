@@ -11,11 +11,15 @@ var SelectListButton = React.createClass({
   propTypes: {
     labelAttribute: React.PropTypes.string.isRequired,
     labelTemplate: React.PropTypes.func,
+    itemTemplate: React.PropTypes.func,
     unsetLabel: React.PropTypes.string,
     items: React.PropTypes.array,
+    loading: React.PropTypes.bool,
     multiSelect: React.PropTypes.bool,
     groupBy: React.PropTypes.func,
-    groupTemplate: React.PropTypes.func
+    groupTemplate: React.PropTypes.func,
+    onChange: React.PropTypes.func,
+    values: React.PropTypes.array
   },
 
   getDefaultProps: function() {
@@ -105,7 +109,7 @@ var SelectListButton = React.createClass({
     if (items.length > 0) {
       const labelAttribute = this.props.labelAttribute || 'label';
       const labelTemplate = this.props.labelTemplate || (item => item[labelAttribute]);
-      if (items.length > 1) {
+      if (items.length === 1) {
         return labelTemplate(items[0]);
       } else {
         return (
