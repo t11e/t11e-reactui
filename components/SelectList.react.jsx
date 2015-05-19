@@ -2,7 +2,7 @@
 
 let React = require('react');
 let $ = require('jquery');
-import {isEqual, any, reject} from 'underscore';
+import {isEqual, zip, every, any, reject} from 'underscore';
 import Immutable from 'immutable';
 
 let PreventSelectionMixin = require('../lib/mixins/PreventSelectionMixin');
@@ -63,6 +63,12 @@ let SelectList = React.createClass({
   componentWillUnmount() {
     if (this.props.parentInput) {
       $(this.props.parentInput).off('keydown', this._handleParentInputKeydown);
+    }
+  },
+
+  componentWillReceiveProps(nextProps) {
+    if (!this._itemArraysEqual(this.state.selectedItems, nextProps.selectedItems)) {
+      this.setState({selectedItems: nextProps.selectedItems});
     }
   },
 
@@ -137,14 +143,23 @@ let SelectList = React.createClass({
   },
 
   _setSelection(items, click = false) {
-    if (!isEqual(this.state.selectedItems, items)) {
+    if (!this._itemArraysEqual(this.state.selectedItems, items)) {
       this.setState({selectedItems: items});
       this.props.onSelectionChange(items, click);
     }
   },
 
+  _itemArraysEqual(a, b) {
+    if (a.length === b.length) {
+      return every(zip(a, b), ([aa, bb]) => this._itemsEqual(aa, bb));
+    }
+    return false;
+  },
+
   _itemsEqual(a, b) {
-    if (a === b) {
+    if (a === null || a === undefined) {
+      return b === null || b === undefined;
+    } else if (a === b) {
       return true;
     } else if (typeof a.equals === 'function' && typeof b.equals === 'function') {
       return a.equals(b);
@@ -172,9 +187,8 @@ let SelectList = React.createClass({
   },
 
   _unselectItem(item) {
-    this._setSelection(reject(this.state.selectedItems, function(i) {
-      return isEqual(i, item);
-    }));
+    this._setSelection(
+      reject(this.state.selectedItems, other => this._itemsEqual(item, other)));
   },
 
   _toggleSelectItem(item) {

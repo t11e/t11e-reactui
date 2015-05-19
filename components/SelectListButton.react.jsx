@@ -1,12 +1,12 @@
 'use strict';
 
-var React = require('react');
-var _ = require('underscore');
+import React from 'react';
+import {isArray, compact, contains} from 'underscore';
 
-var DropdownMenuButton = require('./DropdownMenuButton.react');
-var SelectList = require('./SelectList.react');
+let DropdownMenuButton = require('./DropdownMenuButton.react');
+let SelectList = require('./SelectList.react');
 
-var SelectListButton = React.createClass({
+let SelectListButton = React.createClass({
 
   propTypes: {
     labelAttribute: React.PropTypes.string.isRequired,
@@ -18,12 +18,15 @@ var SelectListButton = React.createClass({
     multiSelect: React.PropTypes.bool,
     groupBy: React.PropTypes.func,
     groupTemplate: React.PropTypes.func,
-    onChange: React.PropTypes.func,
-    values: React.PropTypes.array
+    onChange: React.PropTypes.func.isRequired,
+    values: React.PropTypes.array,
+    treatValuesAsStrings: React.PropTypes.bool.isRequired
   },
 
   getDefaultProps: function() {
     return {
+      // TODO: Legacy mode. Port apps to not use this.
+      treatValuesAsStrings: true,
       items: [],
       unsetLabel: '',
       labelTemplate: null,
@@ -38,7 +41,8 @@ var SelectListButton = React.createClass({
             <span className='count'>{item.count !== 0 ? item.count : ''}</span>
           </a>
         );
-      }
+      },
+      onChange: () => {}
     };
   },
 
@@ -76,32 +80,34 @@ var SelectListButton = React.createClass({
   },
 
   _updateValues: function(values) {
-    values || (values = []);
+    if (this.props.treatValuesAsStrings) {
+      values || (values = []);
 
-    // TODO: We translate somewhat awkwardly between "raw" values from the
-    //   props and the actual cooked item used by the select list. This
-    //   entails converting them to strings. We should always use clean,
-    //   cooked items.
-    if (!_.isArray(values)) {
-      values = [values];
+      // TODO: We translate somewhat awkwardly between "raw" values from the
+      //   props and the actual cooked item used by the select list. This
+      //   entails converting them to strings. We should always use clean,
+      //   cooked items.
+      if (!isArray(values)) {
+        values = [values];
+      }
+      values = compact(values).map(v => '' + v);
     }
-    values = _.map(_.compact(values),
-      function(v) { return '' + v; });
-    this.setState({values: values});
+    this.setState({values});
   },
 
   _getSelectedItems: function() {
-    var items = [];
-    for (var i = 0; i < this.props.items.length; i++) {
-      if (this._isValueSelected(this.props.items[i].value)) {
-        items.push(this.props.items[i]);
+    if (this.props.treatValuesAsStrings) {
+      let items = [];
+      for (let i = 0; i < this.props.items.length; i++) {
+        let value = '' + this.props.items[i].value;
+        if (contains(this.state.values, value)) {
+          items.push(this.props.items[i]);
+        }
       }
+      return items;
+    } else {
+      return this.state.values;
     }
-    return items;
-  },
-
-  _isValueSelected: function(value) {
-    return _.contains(this.state.values, '' + value);
   },
 
   _formatLabel: function() {
@@ -126,17 +132,15 @@ var SelectListButton = React.createClass({
   },
 
   _handleSelectionChange: function(items) {
-    if (this.props.onChange) {
-      if (!this.props.multiSelect && this.refs && this.refs.button) {
-        this.refs.button.close();
-      }
-      var itemValues = _.compact(
-        _.map(items, function(item) {
-          return item.value;
-        }));
-
-      var newValues = this.props.multiSelect ? itemValues : (itemValues[0] || null);
+    if (!this.props.multiSelect && this.refs && this.refs.button) {
+      this.refs.button.close();
+    }
+    if (this.props.treatValuesAsStrings) {
+      let itemValues = compact(items.map(item => item.value));
+      let newValues = this.props.multiSelect ? itemValues : (itemValues[0] || null);
       this.props.onChange(newValues);
+    } else {
+      this.props.onChange(this.props.multiSelect ? items : (items[0] || null));
     }
   }
 
