@@ -21,7 +21,7 @@ let SelectList = React.createClass({
     parentInput: React.PropTypes.object,
     parentElement: React.PropTypes.object,
     selectedItems: React.PropTypes.array,
-    onSelectionChange: React.PropTypes.func
+    onSelectionChange: React.PropTypes.func.isRequired
   },
 
   getDefaultProps() {
@@ -33,7 +33,7 @@ let SelectList = React.createClass({
       parentInput: null,
       parentElement: null,
       selectedItems: [],
-      onSelectionChange: null
+      onSelectionChange: () => {}
     };
   },
 
@@ -117,21 +117,19 @@ let SelectList = React.createClass({
       let index = parseInt($target.attr('data-item-index'));
       if (index >= 0 && index < this.props.items.length) {
         if (this.props.multiSelect) {
-          this._toggleSelectItem(this.props.items[index]);
+          this._toggleSelectItem(this.props.items[index], true);
         } else {
-          this._selectItem(this.props.items[index]);
+          this._selectItem(this.props.items[index], true);
         }
         event.preventDefault();
       }
     }
   },
 
-  _setSelection(items) {
+  _setSelection(items, click = false) {
     if (!_.isEqual(this.state.selectedItems, items)) {
       this.setState({selectedItems: items});
-      if (this.props.onSelectionChange) {
-        this.props.onSelectionChange(items);
-      }
+      this.props.onSelectionChange(items, click);
     }
   },
 
@@ -141,16 +139,16 @@ let SelectList = React.createClass({
     });
   },
 
-  _selectItem(item) {
+  _selectItem(item, click = false) {
     if (item) {
       if (this.props.multiSelect) {
         if (item.value === null) {
-          this._setSelection([]);
+          this._setSelection([], click);
         } else if (!this._isItemSelected(item)) {
-          this._setSelection(this.state.selectedItems.concat([item]));
+          this._setSelection(this.state.selectedItems.concat([item]), click);
         }
       } else {
-        this._setSelection([item]);
+        this._setSelection([item], click);
       }
     }
   },
