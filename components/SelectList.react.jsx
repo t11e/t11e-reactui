@@ -2,11 +2,15 @@
 
 let React = require('react');
 let $ = require('jquery');
-let _ = require('underscore');
+import {isEqual, any, reject} from 'underscore';
 import Immutable from 'immutable';
 
 let PreventSelectionMixin = require('../lib/mixins/PreventSelectionMixin');
 
+/**
+ * Note that items should either be primitives (eg., strings) or implement `equals()`;
+ * otherwise they are compared structurally using Underscore's `isEqual()`.
+ */
 let SelectList = React.createClass({
 
   mixins: [PreventSelectionMixin],
@@ -78,7 +82,7 @@ let SelectList = React.createClass({
                     return (
                       <li key={idx}
                         data-item-index={idx}
-                        data-current={this.state.currentItem === item}
+                        data-current={this._itemsEqual(this.state.currentItem, item)}
                         data-selected={this._isItemSelected(item)}>
                         {this.props.template(item)}
                       </li>
@@ -127,16 +131,24 @@ let SelectList = React.createClass({
   },
 
   _setSelection(items, click = false) {
-    if (!_.isEqual(this.state.selectedItems, items)) {
+    if (!isEqual(this.state.selectedItems, items)) {
       this.setState({selectedItems: items});
       this.props.onSelectionChange(items, click);
     }
   },
 
+  _itemsEqual(a, b) {
+    if (a === b) {
+      return true;
+    } else if (typeof a.equals === 'function' && typeof b.equals === 'function') {
+      return a.equals(b);
+    } else {
+      return isEqual(a, b);
+    }
+  },
+
   _isItemSelected(item) {
-    return _.any(this.state.selectedItems, function(i) {
-      return _.isEqual(i, item);
-    });
+    return any(this.state.selectedItems, other => this._itemsEqual(item, other));
   },
 
   _selectItem(item, click = false) {
@@ -154,8 +166,8 @@ let SelectList = React.createClass({
   },
 
   _unselectItem(item) {
-    this._setSelection(_.reject(this.state.selectedItems, function(i) {
-      return _.isEqual(i, item);
+    this._setSelection(reject(this.state.selectedItems, function(i) {
+      return isEqual(i, item);
     }));
   },
 
