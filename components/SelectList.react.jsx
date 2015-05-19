@@ -19,9 +19,15 @@ let SelectList = React.createClass({
     items: React.PropTypes.array.isRequired,
     limit: React.PropTypes.number,
     multiSelect: React.PropTypes.bool,
-    template: React.PropTypes.func,
+    template: React.PropTypes.oneOfType([
+      React.PropTypes.func,
+      React.PropTypes.element
+    ]),
     groupBy: React.PropTypes.func,
-    groupTemplate: React.PropTypes.func,
+    groupTemplate: React.PropTypes.oneOfType([
+      React.PropTypes.func,
+      React.PropTypes.element
+    ]),
     parentInput: React.PropTypes.object,
     parentElement: React.PropTypes.object,
     selectedItems: React.PropTypes.array,
