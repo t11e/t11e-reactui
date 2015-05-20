@@ -1,3 +1,5 @@
+$form_control_color: #000 !default;
+
 .SelectList {
   min-width: 100px;
   white-space: nowrap;
@@ -94,8 +96,11 @@
         a {
           &:before {
             @extend .ion;
-            content: $ionicon-var-android-checkbox-blank;
+            color: $form_control_color;
+            opacity: 0.5;
+            content: $ionicon-var-android-checkbox-outline-blank;
             padding-right: 5px;
+            font-weight: normal;
           }
 
           &:hover {
@@ -111,6 +116,7 @@
             font-weight: 600;
 
             &:before {
+              font-weight: normal;
               content: $ionicon-var-android-checkbox;
               opacity: 1.0;
             }
