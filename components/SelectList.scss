@@ -94,7 +94,7 @@
         a {
           &:before {
             @extend .ion;
-            content: $ionicon-var-ios7-circle-outline;
+            content: $ionicon-var-android-checkbox-blank;
             padding-right: 5px;
           }
 
@@ -111,7 +111,7 @@
             font-weight: 600;
 
             &:before {
-              content: $ionicon-var-ios7-checkmark;
+              content: $ionicon-var-android-checkbox;
               opacity: 1.0;
             }
           }

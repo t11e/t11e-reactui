@@ -60,7 +60,7 @@
         @extend .ion;
         opacity: 0.5;
         padding: 0 0 0 5px;
-        content: $ionicon-var-ios7-arrow-down;
+        content: $ionicon-var-ios-arrow-down;
       }
     }
   }
@@ -69,7 +69,7 @@
     opacity: 0.6;
     .dropdown_menu_button_content_arrow {
       span:before {
-        content: $ionicon-var-ios7-arrow-up;
+        content: $ionicon-var-ios-arrow-up;
       }
     }
   }
