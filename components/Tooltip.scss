@@ -1,0 +1,43 @@
+$tooltip_background_color: rgba(0, 0, 0, 0.7);
+$tooltip_text_color: #fff;
+$tooltip_arrow_size: 5px;
+
+.Tooltip {
+  .Tooltip_box {
+    position: absolute;
+    bottom: 15px;
+    display: flex;
+    display: -webkit-flex;
+    -webkit-justify-content: center;
+    justify-content: center;
+    width: 100%;
+
+    .Tooltip_content {
+      @include dropdown;
+      flex: 0 0 auto;
+      cursor: pointer;
+      background: $tooltip_background_color;
+      color: $tooltip_text_color;
+      padding: 5px 10px;
+      border-radius: 4px;
+      text-align: center;
+      font-size: 0.7rem;
+      text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+
+      &:after {
+        top: 100%;
+        left: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+        border-color: rgba(0, 0, 0, 0);
+        border-top-color: $tooltip_background_color;
+        border-width: $tooltip_arrow_size;
+        margin-left: -$tooltip_arrow_size;
+      }
+    }
+  }
+}

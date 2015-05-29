@@ -1,0 +1,46 @@
+.Toggle {
+  vertical-align: top;
+  position: relative;
+  line-height: 1;
+  display: inline-block;
+  white-space: nowrap;
+  cursor: pointer;
+
+  .Toggle_Item {
+    vertical-align: top;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    display: inline-block;
+    padding: 4px 10px;
+
+    &:before {
+      @extend .ion;
+      content: $ionicon-var-ios-circle-outline;
+      color: $link_color;
+      font-size: 150%;
+      margin: 0 5px 0 0;
+      vertical-align: middle;
+      position: relative;
+      top: -1px;
+    }
+
+    &[data-is-enabled="false"] {
+      opacity: 0.3;
+    }
+
+    &[data-is-selected="true"] {
+      &:before {
+        content: $ionicon-var-checkmark-circled;
+      }
+    }
+
+    > span {
+      display: inline-block;
+    }
+
+    &:hover {
+      @include fade_on_hover;
+    }
+  }
+}

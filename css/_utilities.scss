@@ -5,3 +5,36 @@
     transition: none;
   }
 }
+
+@mixin clear_after {
+  &:after {
+    content: "";
+    width: 0;
+    height: 0;
+    display: block;
+    overflow: hidden;
+    clear: both;
+  }
+}
+
+@mixin unselectable {
+  user-select: none;
+  -moz-user-select: -moz-none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
+}
+
+@mixin selection {
+  background: $selection_background_color;
+  color: $selection_color;
+}
+
+@mixin text_shadow {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+@mixin text_bevel {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
