@@ -1,7 +1,7 @@
 'use strict';
 
 import React from 'react';
-import {range} from 'underscore';
+import _ from 'underscore';
 import moment from 'moment';
 import 'moment-range';
 import domEvent from 'dom-event';
@@ -199,11 +199,11 @@ const CalendarSelector = React.createClass({
                           })
                         }
                         {
-                          range(6 - weeks.length).map(n => {
+                          _.range(6 - weeks.length).map(n => {
                             return (
                               <tr key={'n' + n}>
                                 {
-                                  range(7).map((m) => {
+                                  _.range(7).map((m) => {
                                     return (
                                       <td key={m} onClick={this._handleEmptyCellClick}>
                                         <span className='CalendarSelector_empty_cell'>{"\u00a0"}</span>
