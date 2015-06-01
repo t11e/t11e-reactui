@@ -1,17 +1,29 @@
 'use strict';
 
-var React = require('react');
-var $ = require('jquery');
-var domEvent = require('dom-event');
-var DOMUtils = require('t11e-utils').DOMUtils;
+import React from 'react';
+import $ from 'jquery';
+import domEvent from 'dom-event';
+import {getOffsetTop, getWidth, getHeight} from 't11e-utils/lib/DOMUtils';
 
-var WindowResizeEventMixin = require('../lib/mixins/WindowResizeEventMixin');
+import {WindowResizeEventMixin} from '../lib/mixins/WindowResizeEventMixin';
 
-var Fixable = React.createClass({
+function computeHeight(element) {
+  const style = window.getComputedStyle(element);
+  return getHeight(element) + parseInt(style['margin-top']) + parseInt(style['margin-bottom']);
+}
+
+export const Fixable = React.createClass({
 
   mixins: [WindowResizeEventMixin],
 
-  getDefaultProps: function() {
+  propTypes: {
+    zIndex: React.PropTypes.number.isRequired,
+    target: React.PropTypes.oneOf(['top', 'bottom']),
+    scrollContext: React.PropTypes.element,
+    container: React.PropTypes.element
+  },
+
+  getDefaultProps() {
     return {
       container: null,
       scrollContext: null,
@@ -19,60 +31,69 @@ var Fixable = React.createClass({
     };
   },
 
-  getInitialState: function() {
+  getInitialState() {
     return {
       fixed: false,
       originalTop: null,
-      width: null,
-      height: null
+      originalBottom: null,
+      originalWidth: null,
+      originalHeight: null,
+      placeholderWidth: null,
+      placeholderHeight: null
     };
   },
 
-  componentDidMount: function() {
-    domEvent.on(this._getScrollContainer(), 'scroll', this._handleDocumentScroll);
-    domEvent.on(this._getScrollContainer(), 'touchmove', this._handleDocumentScroll);
+  componentDidMount() {
+    const scrollContainer = this._getScrollContainer();
+    domEvent.on(scrollContainer, 'scroll', this._handleDocumentScroll);
+    domEvent.on(scrollContainer, 'touchmove', this._handleDocumentScroll);
     // When a user swipes very fast, and lets go of the touch event
-    domEvent.on(this._getScrollContainer(), 'touchend', this._handleDocumentScroll);
+    domEvent.on(scrollContainer, 'touchend', this._handleDocumentScroll);
   },
 
-  componentWillUnmount: function() {
-    domEvent.off(this._getScrollContainer(), 'scroll', this._handleDocumentScroll);
-    domEvent.off(this._getScrollContainer(), 'touchmove', this._handleDocumentScroll);
+  componentWillUnmount() {
+    const scrollContainer = this._getScrollContainer();
+    domEvent.off(scrollContainer, 'scroll', this._handleDocumentScroll);
+    domEvent.off(scrollContainer, 'touchmove', this._handleDocumentScroll);
     // When a user swipes very fast, and lets go of the touch event
-    domEvent.off(this._getScrollContainer(), 'touchend', this._handleDocumentScroll);
+    domEvent.off(scrollContainer, 'touchend', this._handleDocumentScroll);
   },
 
-  componentDidUpdate: function(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.state.fixed && this.isMounted() && (
       this.state.windowWidth !== prevState.windowWidth ||
       this.state.windowHeight !== prevState.windowHeight)) {
       // TODO: Should this not just set state.width?
-      var element = this.getDOMNode();
+      /*
+      const element = this.getDOMNode();
       element.style.width = DOMUtils.getWidth(element.parentNode) + 'px';
+      */
     }
   },
 
-  render: function() {
+  render() {
     if (this.state.fixed) {
+      const {target} = this.props;
       return (
         <section className='Fixable' data-fixed={true}>
           <div className='Fixable_content' style={{
             position: 'fixed',
-            top: 0,
-            width: this.state.width,
-            height: this.state.height,
+            top: target === 'top' ? 0 : null,
+            bottom: target === 'bottom' ? 0 : null,
+            width: this.state.originalWidth,
+            height: this.state.originalHeight,
             zIndex: this.props.zIndex
           }}>
             {this.props.children}
           </div>
           <div className='Fixable_placeholder' style={{
-            width: this.state.width,
-            height: this.state.height
+            width: this.state.placeholderWidth,
+            height: this.state.placeholderHeight
           }}/>
         </section>
       );
     } else {
-      var resetStyle = {width: 'auto'};  // Works around React bug where style isn't removed
+      const resetStyle = {width: 'auto'};  // Works around React bug where style isn't removed
       return (
         <section className='Fixable' data-fixed={false} style={resetStyle}>
           <div className='Fixable_content'>
@@ -83,47 +104,59 @@ var Fixable = React.createClass({
     }
   },
 
-  _handleDocumentScroll: function(event) {
+  _handleDocumentScroll(event) {
     if (this.isMounted()) {
-      var $el = $(this.getDOMNode());
-      if ($el.is(':visible')) {
+      const element = this.getDOMNode();
+      if ($(element).is(':visible')) {
         if (this.state.originalTop === null) {
-          var $container = $(this._getScrollContainer());
-          var containerTop = $container.offset() ? $container.offset().top : 0;
-          this.setState({originalTop: Math.max(0, $el.offset().top - containerTop)});
+          const $scrollContainer = $(this._getScrollContainer());
+          const scrollContainerTop = $scrollContainer.offset() ? $scrollContainer.offset().top : 0;
+          this.setState({originalTop: Math.max(0, getOffsetTop(element) - scrollContainerTop)});
         }
-        var fix = this._shouldBeFixed();
-        if (fix != this.state.fixed) {
+
+        const fix = this._shouldBeFixed();
+        if (fix !== this.state.fixed) {
+          let [width, height] = [getWidth(element), getHeight(element)];
           this.setState({
             fixed: fix,
-            width: $el.outerWidth(),
-            height: $el.outerHeight()
+            originalWidth: width,
+            originalHeight: height,
+            placeholderWidth: width === getWidth(element.parentElement) ? '100%' : width,
+            placeholderHeight: height
           });
         }
       }
     }
   },
 
-  _shouldBeFixed: function() {
-    var scrollTop = $(this._getScrollContainer()).scrollTop();
-    if (this.props.container && !this.state.fixed) {
+  _shouldBeFixed() {
+    const scrollTop = $(this._getScrollContainer()).scrollTop();
+    const element = this.getDOMNode();
+    const height = computeHeight(element);
+
+    let container = this.props.container;
+    if (container && !this.state.fixed) {
       // Only fix if height is larger than a certain height
-      var $el = $(this.getDOMNode());
-      var $container = $(this.props.container.getDOMNode());
-      var containerHeight = $container.outerHeight();
-      var top = 0;
-      if (top + $el.outerHeight() > $container.offset().top + $container.outerHeight() - scrollTop) {
-        return false;
+      const top = 0;
+      const $container = $(container.getDOMNode());
+      return !(top + height > $container.offset().top + $container.outerHeight() - scrollTop);
+    } else {
+      const scrollContainerHeight = getHeight(this._getScrollContainer());
+      switch (this.props.target) {
+        case 'top':
+          return scrollTop > this.state.originalTop;
+
+        case 'bottom':
+          return scrollTop + scrollContainerHeight - height < this.state.originalTop;
       }
     }
-    return scrollTop > this.state.originalTop;
   },
 
-  _getScrollContainer: function() {
+  _getScrollContainer() {
     if (this.props.scrollContext) {
-      var container = this.props.scrollContext.getScrollContainer();
-      if (container && container.getDOMNode) {
-        return container.getDOMNode();
+      const scrollContainer = this.props.scrollContext.getScrollContainer();
+      if (scrollContainer && scrollContainer.getDOMNode) {
+        return scrollContainer.getDOMNode();
       }
     }
     return window;
@@ -131,4 +164,4 @@ var Fixable = React.createClass({
 
 });
 
-module.exports = Fixable;
+export default Fixable;
