@@ -13,7 +13,7 @@
     text-align: center;
 
     &:before {
-      @extend .ion-ios7-reloading;
+      @extend .ion-ios-reloading;
       -webkit-animation: spin 1.5s infinite linear;
       -moz-animation: spin 1.5s infinite linear;
       -o-animation: spin 1.5s infinite linear;
