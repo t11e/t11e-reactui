@@ -15,6 +15,7 @@ const StoreDependency = React.createClass({
     store: React.PropTypes.object.isRequired,
     item: React.PropTypes.object,
     items: React.PropTypes.array,
+    errorMessage: React.PropTypes.string,
     children: React.PropTypes.node,
     inline: React.PropTypes.bool
   },
@@ -76,9 +77,13 @@ const StoreDependency = React.createClass({
         break;
 
       case 'error':
+        const errorMessage = this.props.errorMessage ||
+          (this.props.inline ? 'Unavailable.' :
+            'Could not show this view due to an error.');
+
         content = (
           <div className='StoreDependency_error'>
-            <h1>{'Could not show this view due to an error.'}</h1>
+            <h1>{errorMessage}</h1>
           </div>
         );
         break;
