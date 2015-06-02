@@ -20,7 +20,7 @@ export const Fixable = React.createClass({
     zIndex: React.PropTypes.number.isRequired,
     target: React.PropTypes.oneOf(['top', 'bottom']),
     scrollContext: React.PropTypes.element,
-    container: React.PropTypes.element
+    container: React.PropTypes.any
   },
 
   getDefaultProps() {
