@@ -4,7 +4,7 @@
   text-align: center;
   display: table;
   width: 100%;
-  color: lighten($text_color, 40%);
+  opacity: 0.3;
 
   .Spinner_content {
     display: table-cell;
@@ -13,9 +13,9 @@
     text-align: center;
 
     &:before {
-      @extend .ion-refresh;
-      @include spin;
-      font-size: 80px;
+      @extend .ion-load-d;
+      @include spin(2.5s);
+      font-size: 10rem;
     }
 
     .Spinner_content_title {

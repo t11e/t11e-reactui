@@ -1,4 +1,4 @@
-@mixin spin($speed: 1s) {
+@mixin spin($speed: 2s) {
   -webkit-animation: spin $speed infinite linear;
   -moz-animation: spin $speed infinite linear;
   -o-animation: spin $speed infinite linear;
