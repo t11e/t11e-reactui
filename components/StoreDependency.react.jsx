@@ -8,6 +8,22 @@ import Spinner from './Spinner.react';
 /**
  * Conditionally presents children depending on store state. When store is not
  * available, it shows a message.
+ *
+ * The store must:
+ *
+ * 1. Have the attribute `state`, which must be one of `ready`, `loading`, `loaded` or
+ *    `error`.
+ * 2. Emit a `changed` event whenever its state changes.
+ *
+ * The `errorMessage` is customizable.
+ *
+ * If you supply `inline`, it will be rendered small, suitable for inline cases.
+ *
+ * If you supply `item`, it will assume that when the state is `loaded`, an absent item
+ * means "not found".
+ *
+ * If you supply `items`, it will assume that when the state is `loaded`, an empty
+ * item array means "empty".
  */
 const StoreDependency = React.createClass({
 
