@@ -79,6 +79,7 @@
     .dropdown_menu_button_content_label_text {
       span {
         @extend .ion-refresh;
+        @include spin;
       }
     }
   }

@@ -14,10 +14,7 @@
 
     &:before {
       @extend .ion-refresh;
-      -webkit-animation: spin 1.5s infinite linear;
-      -moz-animation: spin 1.5s infinite linear;
-      -o-animation: spin 1.5s infinite linear;
-      animation: spin 1.5s infinite linear;
+      @include spin;
       font-size: 80px;
     }
 
