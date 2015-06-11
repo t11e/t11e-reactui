@@ -1,0 +1,51 @@
+.TextField {
+  position: relative;
+
+  input, textarea, .TextField_template {
+    width: 100%;
+    font-size: inherit;
+    transition: background-color 0.3s ease-out;
+    background: rgba(0, 0, 0, 0.03);
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    color: inherit;
+  }
+
+  &[data-inline="false"] {
+    display: block;
+
+    input, textarea, .TextField_template {
+      &:hover {
+        background: rgba(0, 0, 0, 0.06);
+      }
+
+      &:focus {
+        color: $text_color;
+        outline: none;
+        background: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  &[data-inline="true"] {
+    display: inline-block;
+
+    input, textarea, *:focus, .TextField_template {
+      @include inherit_styles;
+      overflow: hidden !important;
+      min-width: 1em;
+    }
+  }
+
+  .TextField_template {
+    white-space: pre !important;
+    width: auto;
+    transition: none;
+    position: absolute;
+    visibility: hidden;
+    white-space: nowrap;
+    left: 0;
+    top: 0;
+  }
+}

@@ -1,0 +1,50 @@
+.Checkbox {
+  .Checkbox_value {
+    display: inline-block;
+    border-radius: 3px;
+    background: $background_color;
+    color: $text_color;
+    padding: 3px 5px;
+    font-size: 110%;
+
+    &:before {
+      @extend .ion-checkmark;
+      transition: transform 0.3s cubic-bezier(0, 0, 0.25, 1),
+        opacity 0.2s ease-out;
+    }
+  }
+
+  &[data-checked="true"] {
+    .Checkbox_value {
+      &:before {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  }
+
+  &[data-checked="false"] {
+    .Checkbox_value {
+      &:before {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+    }
+  }
+
+  &:hover {
+    .Checkbox_value {
+      opacity: 0.9;
+    }
+  }
+
+  &:active {
+    .Checkbox_value {
+      opacity: 0.8;
+    }
+  }
+
+  label {
+    margin: 0 0 0 5px;
+  }
+}

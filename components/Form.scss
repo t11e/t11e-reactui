@@ -1,0 +1,47 @@
+.Form {
+  .Field {
+    .Field_label {
+      color: $secondary_color;
+      font-weight: 500;
+      opacity: 0.6;
+      font-size: 80%;
+      text-transform: uppercase;
+      display: block;
+      margin: 0 0 5px 0;
+    }
+
+    p {
+      font-size: 90%;
+    }
+  }
+
+  .Fieldset {
+    & + .Fieldset {
+      padding: 20px 0 0 0;
+      margin: 20px 0 0 0;
+      border-top: solid 1px $hairline_color;
+    }
+
+    &[data-direction="vertical"] {
+    }
+
+    &[data-direction="horizontal"] {
+      @include display_flex;
+      @include flex_wrap(nowrap);
+      @include flex_align_items(flex-end);
+      @include flex_align_content(stretch);
+
+      > * {
+        @include flex(1, 1, auto);
+      }
+
+      > .Field + .Field {
+        margin-left: 20px;
+      }
+
+      > .Fieldset + .Fieldset {
+        margin-left: 20px;
+      }
+    }
+  }
+}

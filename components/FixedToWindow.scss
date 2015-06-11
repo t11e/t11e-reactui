@@ -1,0 +1,19 @@
+.FixedToWindow {
+  .FixedToWindow_content {
+    position: fixed;
+    width: 100%;
+    z-index: $zindex_fixed;
+  }
+
+  &[data-position='top'] {
+    .FixedToWindow_content {
+      top: 0;
+    }
+  }
+
+  &[data-position='bottom'] {
+    .FixedToWindow_content {
+      bottom: 0;
+    }
+  }
+}

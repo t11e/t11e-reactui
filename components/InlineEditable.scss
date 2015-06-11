@@ -1,0 +1,78 @@
+.InlineEditable {
+  @include display_flex;
+  @include flex_wrap(nowrap);
+  @include flex_align_items(stretch);
+
+  .InlineEditable_editor {
+    @include flex(1, 1, auto);
+    @include align_self(baseline);
+    border-bottom: solid 1px transparentize($background_color, 0.8);
+    padding-bottom: 5px;
+    margin-bottom: -6px;
+  }
+
+  label {
+    @include flex(0, 0, auto);
+    @include align_self(baseline);
+    font-size: inherit;
+    color: inherit;
+    line-height: inherit;
+    display: inline-block;
+  }
+
+  > a {
+    @include flex(0, 0, auto);
+    @include align_self(baseline);
+    color: inherit;
+    margin: 0 0 0 5px;
+    padding: 2px 4px;
+    border-radius: 3px;
+
+    &:hover {
+      background: transparentize($background_color, 0.8);
+    }
+  }
+
+  &[data-editing="true"] {
+    label {
+      display: none;
+    }
+
+    .InlineEditable_editor {
+      position: relative;
+      visibility: visible;
+    }
+
+    > a {
+      opacity: 1.0;
+
+      &:before {
+        @extend .ion-checkmark;
+        color: $green_color;
+      }
+    }
+  }
+
+  &[data-editing="false"] {
+    label {
+      display: inline;
+    }
+
+    .InlineEditable_editor {
+      position: absolute;
+      visibility: hidden;
+    }
+
+    > a {
+      opacity: 0.5;
+
+      &:before {
+        @extend .ion-edit;
+      }
+
+      &:hover {
+        opacity: 1.0;
+      }
+    }
+  }
+}
