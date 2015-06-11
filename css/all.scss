@@ -1,2 +1,8 @@
 @import "./utilities";
 @import "./animation";
+
+// Defaults
+$text_color: inherit !default;
+$field_label_color: inherit !default;
+$hairline_color: rgba(0, 0, 0, 0.1) !default;
+
