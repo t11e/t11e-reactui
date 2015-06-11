@@ -1,6 +1,6 @@
-$tooltip_background_color: rgba(0, 0, 0, 0.7);
-$tooltip_text_color: #fff;
-$tooltip_arrow_size: 5px;
+$tooltip_background_color: rgba(0, 0, 0, 0.7) !default;
+$tooltip_text_color: #fff !default;
+$tooltip_arrow_size: 5px !default;
 
 .Tooltip {
   .Tooltip_box {

@@ -1,8 +1,10 @@
+$zindex_fixed_to_window: 10000 !default;
+
 .FixedToWindow {
   .FixedToWindow_content {
     position: fixed;
     width: 100%;
-    z-index: $zindex_fixed;
+    z-index: $zindex_fixed_to_window;
   }
 
   &[data-position='top'] {
