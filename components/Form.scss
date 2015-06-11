@@ -23,6 +23,9 @@
     }
 
     &[data-direction="vertical"] {
+      > .Field + .Field {
+        margin-top: 20px;
+      }
     }
 
     &[data-direction="horizontal"] {
