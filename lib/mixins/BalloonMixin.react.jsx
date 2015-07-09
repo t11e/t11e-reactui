@@ -18,11 +18,17 @@ const BalloonMixin = {
   },
 
   componentDidMount() {
-    DomEvent.on(this.getDOMNode(), 'mouseout', this._balloonMixinHandleMouseOut);
+    const node = this.getDOMNode();
+    if (node) {
+      DomEvent.on(node, 'mouseout', this._balloonMixinHandleMouseOut);
+    }
   },
 
   componentWillUnmount() {
-    DomEvent.off(this.getDOMNode(), 'mouseout', this._balloonMixinHandleMouseOut);
+    const node = this.getDOMNode();
+    if (node) {
+      DomEvent.off(node, 'mouseout', this._balloonMixinHandleMouseOut);
+    }
   },
 
   renderLayer(props) {
