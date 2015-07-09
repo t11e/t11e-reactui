@@ -116,7 +116,11 @@ const StoreDependency = React.createClass({
   },
 
   _handleChanged() {
-    this.setState({storeState: this.props.store.state});
+    // FIXME: For some reason we sometimes get changes even when we're not
+    //   mounted. React bug?
+    if (this.isMounted()) {
+      this.setState({storeState: this.props.store.state});
+    }
   }
 
 });
