@@ -16,15 +16,17 @@
   }
 
   .Fieldset {
-    & + .Fieldset {
-      padding: 20px 0 0 0;
-      margin: 20px 0 0 0;
-      border-top: solid 1px $hairline_color;
-    }
-
     &[data-direction="vertical"] {
-      > .Field + .Field {
-        margin-top: 20px;
+      & + .Fieldset {
+        padding: 20px 0 0 0;
+        margin: 20px 0 0 0;
+        border-top: solid 1px $hairline_color;
+      }
+
+      > .Field + .Field,
+      > .Field + .Fieldset,
+      > .Fieldset + .Field {
+        padding: 20px 0 0 0;
       }
     }
 
@@ -38,12 +40,11 @@
         @include flex(1, 1, auto);
       }
 
-      > .Field + .Field {
-        margin-left: 20px;
-      }
-
+      > .Field + .Field,
+      > .Field + .Fieldset,
+      > .Fieldset + .Field,
       > .Fieldset + .Fieldset {
-        margin-left: 20px;
+        padding: 20px 0 0 0;
       }
     }
   }

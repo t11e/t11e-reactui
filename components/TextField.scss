@@ -18,9 +18,11 @@
     input, textarea, .TextField_template {
       &:hover {
         background: rgba(0, 0, 0, 0.06);
+        cursor: default;
       }
 
       &:focus {
+        cursor: text;
         color: $text_color;
         outline: none;
         background: rgba(0, 0, 0, 0.1);
