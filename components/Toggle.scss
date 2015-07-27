@@ -1,7 +1,5 @@
 .Toggle {
-  vertical-align: top;
   position: relative;
-  line-height: 1;
   display: inline-block;
   white-space: nowrap;
   cursor: pointer;
@@ -12,13 +10,15 @@
     z-index: 1;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     display: inline-block;
-    padding: 4px 10px;
+
+    & + .Toggle_Item {
+      margin-left: 10px;
+    }
 
     &:before {
       @extend .ion;
       content: $ionicon-var-ios-circle-outline;
       color: $link_color;
-      font-size: 150%;
       margin: 0 5px 0 0;
       vertical-align: middle;
       position: relative;
