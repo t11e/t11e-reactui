@@ -169,6 +169,9 @@ let SelectList = React.createClass({
   },
 
   _isItemSelected(item) {
+    if (this.state.selectedItems.length === 0 && item.value === null) {
+      return true;
+    }
     return any(this.state.selectedItems, other => this._itemsEqual(item, other));
   },
 
