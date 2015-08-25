@@ -16,6 +16,12 @@ var ToggleSlider = React.createClass({
 
   mixins: [PreventSelectionMixin],
 
+  propTypes: {
+    onChange: React.PropTypes.func,
+    items: React.PropTypes.array,
+    value: React.PropTypes.string
+  },
+
   getDefaultProps: function() {
     return {
       onChange: null,
@@ -26,23 +32,11 @@ var ToggleSlider = React.createClass({
 
   getInitialState: function() {
     return {
-      selectedValue: this.props.value,
-      handleX: null,
-      handleWidth: null
-    }
-  },
-
-  componentDidMount: function() {
-    this._updateHandle();
+      selectedValue: this.props.value
+    };
   },
 
   componentDidUpdate: function(prevProps, prevState) {
-    if (prevProps.value !== this.props.value ||
-      prevProps.values !== this.props.values ||
-      this.state.selectedValue !== prevState.selectedValue) {
-      this._updateHandle();
-    }
-
     if (prevProps.value !== this.props.value) {
       this.setState({selectedValue: this.props.value});
     }
@@ -58,10 +52,18 @@ var ToggleSlider = React.createClass({
       return null;
     }
 
+    if (this.isMounted()) {
+      var $el = $(this.getDOMNode());
+      var $item = $el.find('.ToggleSlider_item[data-value="' +
+        (this.state.selectedValue || 'null') + '"]');
+      var handleX = $item.offset().left - $el.offset().left;
+      var handleWidth = $item.outerWidth();
+    }
+
     var handleStyle = {};
-    if (this.state.handleX !== null && this.state.handleWidth !== null) {
-      handleStyle.left = this.state.handleX;
-      handleStyle.width = this.state.handleWidth;
+    if (handleX !== null && handleWidth !== null) {
+      handleStyle.left = handleX;
+      handleStyle.width = handleWidth;
     }
 
     return (
@@ -70,12 +72,14 @@ var ToggleSlider = React.createClass({
         onClick={this._handleClick}>
         {
           _.map(items, function(item, idx) {
-            return <span
-              className='ToggleSlider_item'
-              data-value={item.props.value || 'null'}
-              key={idx}>
-              {item}
-            </span>
+            return (
+              <span
+                className='ToggleSlider_item'
+                data-value={item.props.value || 'null'}
+                key={idx}>
+                {item}
+              </span>
+            );
           })
         }
         {
@@ -83,7 +87,7 @@ var ToggleSlider = React.createClass({
             <span className='ToggleSlider_handle' style={handleStyle}/>
         }
       </div>
-    )
+    );
   },
 
   _handleClick: function(event) {
@@ -91,18 +95,6 @@ var ToggleSlider = React.createClass({
       selectedValue: $(event.target).closest('.ToggleSlider_item').attr('data-value')
     });
     event.preventDefault();
-  },
-
-  _updateHandle: function() {
-    var $el = $(this.getDOMNode());
-    var $item = $el.find('.ToggleSlider_item[data-value="' +
-      (this.state.selectedValue || 'null') + '"]');
-    if ($item.length > 0) {
-      this.setState({
-        handleX: $item.offset().left - $el.offset().left,
-        handleWidth: $item.outerWidth()
-      });
-    }
   }
 
 });
