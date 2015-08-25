@@ -61,7 +61,8 @@ var DropdownMenuButton = React.createClass({
         data-loading={this.props.loading}
         data-open={this.state.open}
         onClick={this._handleClick}
-        onTouchStart={this._handleClick}>
+        onMouseDown={this._handleMouseDownOrTouchStart}
+        onTouchStart={this._handleMouseDownOrTouchStart}>
         <span className='dropdown_menu_button_content'>
           <span className='dropdown_menu_button_content_label'>
             {
@@ -95,11 +96,16 @@ var DropdownMenuButton = React.createClass({
     this.close();
   },
 
-  _handleClick: function(event) {
+  _handleClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  },
+
+  _handleMouseDownOrTouchStart(event) {
+    event.preventDefault();
+    event.stopPropagation();
     if (!this.props.loading) {
       this._toggleOpen();
-      event.preventDefault();
-      event.stopPropagation();
     }
   },
 
