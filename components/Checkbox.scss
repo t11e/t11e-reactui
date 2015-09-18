@@ -2,6 +2,7 @@
   .Checkbox_value {
     display: inline-block;
     border-radius: 3px;
+    border: solid 1px $hairline_color;
     background: $background_color;
     color: $text_color;
     padding: 3px 5px;
