@@ -4,7 +4,7 @@ import React from 'react';
 import 'react/addons';
 
 import LayeredComponentMixin from './LayeredComponentMixin';
-import {Balloon} from '../components/Balloon.react';
+import Balloon from '../../components/Balloon.react';
 
 const BalloonMixin = {
 
