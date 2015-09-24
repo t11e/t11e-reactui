@@ -2,10 +2,9 @@
 
 import React from 'react';
 import 'react/addons';
-import DomEvent from 'dom-event';
 
 import LayeredComponentMixin from './LayeredComponentMixin';
-import Balloon from '../../components/Balloon.react';
+import {Balloon} from '../components/Balloon.react';
 
 const BalloonMixin = {
 
@@ -20,18 +19,18 @@ const BalloonMixin = {
   componentDidMount() {
     const node = this.getDOMNode();
     if (node) {
-      DomEvent.on(node, 'mouseout', this._balloonMixinHandleMouseOut);
+      node.addEventListener('mouseout', this._balloonMixinHandleMouseOut);
     }
   },
 
   componentWillUnmount() {
     const node = this.getDOMNode();
     if (node) {
-      DomEvent.off(node, 'mouseout', this._balloonMixinHandleMouseOut);
+      node.removeEventListener('mouseout', this._balloonMixinHandleMouseOut);
     }
   },
 
-  renderLayer(props) {
+  renderLayer() {
     if (this.state.balloon) {
       return this.state.balloon;
     }
@@ -67,7 +66,7 @@ const BalloonMixin = {
     });
   },
 
-  _balloonMixinHandleMouseOut(event) {
+  _balloonMixinHandleMouseOut() {
     if (this.state.balloon && !this.state.hiding) {
       this.hideBalloon();
     }
