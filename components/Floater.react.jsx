@@ -149,13 +149,18 @@ var Floater = React.createClass({
   },
 
   updatePosition: function() {
+    var floaterRef = this.refs.floater;
+    if (!floaterRef) {
+      return;
+    }
+
     var style = {
       position: 'absolute',
       zIndex: this.props.zIndex
     };
 
     var $el = $(this._findParentElement());
-    var $floater = $(this.refs.floater.getDOMNode());
+    var $floater = $(floaterRef.getDOMNode());
     if ($el.length > 0 && $floater.length > 0) {
       var offsetX = this.props.offsetX || 0;
       var offsetY = this.props.offsetY || 0;
