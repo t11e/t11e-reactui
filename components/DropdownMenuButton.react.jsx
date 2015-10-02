@@ -36,6 +36,10 @@ var DropdownMenuButton = React.createClass({
   },
 
   renderLayer: function(props) {
+    const style = {};
+    if (this.props.minWidth) {
+      style.minWidth = this.props.minWidth;
+    }
     return this.state.open ? (
       <Floater
         parentRef={this.refs.button}
@@ -46,7 +50,7 @@ var DropdownMenuButton = React.createClass({
         onHide={this._handleClose}
         className='dropdown_menu_button_floater'
         zIndex={props.zIndex}>
-        <div className='dropdown_menu_button_dropdown'>
+        <div className='dropdown_menu_button_dropdown' style={style}>
           {this.props.children}
         </div>
       </Floater>
