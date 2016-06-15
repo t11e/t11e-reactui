@@ -121,10 +121,10 @@ var Floater = React.createClass({
         .on('keydown', this._handleFieldKeyDown);
 
       $(window).on('resize', this._handleWindowResize);
-      $(document).on('keydown', this._handleDocumentKeyDown);
+      $(document.body).on('keydown', this._handleDocumentKeyDown);
       if (this.props.handleClicks) {
-        $(document).on('mousedown', this._handleDocumentMouseDown);
-        $(document).on('touchstart', this._handleDocumentTouchStart);
+        $(document.body).on('mousedown', this._handleDocumentMouseDown);
+        $(document.body).on('touchstart', this._handleDocumentTouchStart);
       }
     }
   },
@@ -138,10 +138,10 @@ var Floater = React.createClass({
       }
 
       if (this.props.handleClicks) {
-        $(document).off('touchstart', this._handleDocumentTouchStart);
-        $(document).off('mousedown', this._handleDocumentMouseDown);
+        $(document.body).off('touchstart', this._handleDocumentTouchStart);
+        $(document.body).off('mousedown', this._handleDocumentMouseDown);
       }
-      $(document).off('keydown', this._handleDocumentKeyDown);
+      $(document.body).off('keydown', this._handleDocumentKeyDown);
       $(window).off('resize', this._handleWindowResize);
 
       this._hooked = false;
